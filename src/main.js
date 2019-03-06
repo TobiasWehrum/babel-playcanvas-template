@@ -46,3 +46,5 @@ import 'javascript-dual-inherit'
 
 import './example.js';
 
+if (module.hot)
+    module.hot.accept()

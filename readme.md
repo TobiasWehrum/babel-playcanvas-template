@@ -1,3 +1,11 @@
+# Forker's Note
+
+Hey folks! This is a fork of [https://github.com/whydoidoit/babel-playcanvas-template](https://github.com/whydoidoit/babel-playcanvas-template) made by the amazing [whydoidoit](https://github.com/whydoidoit). Unfortunately it seems that over the last 2 years some things broke, and since it seems he is not maintaining the repository anymore I decided to spend a few minutes to make the necessary changes.
+
+Apart from this note and the chapters "Deprecated Methods", "Setting up Redirector (Chrome only)" and a small change in "HTTPS serving", this document is completely written by whydoidoit.
+
+Also shoutout to [thisredone](https://github.com/thisredone/coffeescript-playcanvas-template) from whom I stole the Redirector instructions!
+
 # Introduction
 
 This is a template project for using ES6 via Babel and WebPack to build [PlayCanvas](https://playcanvas.com) projects.
@@ -180,24 +188,36 @@ the attributes of something change, you add a new script or you want to publish 
 This template project has a solution for that too.  You will be able to see all of your 
 source code in your developer tools when you use any means of making a `development` build.
 
-#### Loading Screen Method
+#### Deprecated Methods
 
-If you have a loading screen or can make one then you can use either the whole script in
-`utility-scripts/loading_screen_scripts_2_0.js` or add the `utility-scripts/exerpt.js` to
-the top of your own.  
+Previously two deprecated methods of locally serving a development build were described here: *Loading Screen Method* and *PlayCanvas Script Method*. As far as I can see, neither work anymore. (Possibly due to ``pc.Asset.prototype.getFileUrl`` not being used anymore for loading scripts, but that is pure conjecture on my part.)
 
-This will allow you to serve files locally if you add a `?local=http://localhost:8081` to 
-your launch url query string **AND** you change the protocol of the launch page to be `http`. 
-If you really need `https` then see the section later on how to do that instead.
+#### Setting up Redirector (Chrome only)
 
-#### PlayCanvas Script Method
+*The following instructions are taken from [this fork](https://github.com/thisredone/coffeescript-playcanvas-template) by thisredone. I've slightly modified them - the biggest change is that they should only apply to http URLs.*
 
-This is less reliable.  Create a script in PlayCanvas Editor.  Copy `utility-scripts/exerpt.js`
-into it and set it's loading order to be before `main.build.js`.
+- Download the [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd?hl=en) chrome extension.
+- Setup two redirects:
 
-See the instruction about the URL in the previous section on how to modify your launch to use
-it.
+    1. One for script files  
+        **Example URL**: http://launch.playcanvas.com/api/assets/files/main.build.js?id=11217398&branchId=00465776-6b83-4f4c-af75-01c351769fa8  
+        **Include pattern**: http://launch.playcanvas.com/api/assets/files/(.+.js)?(.*)  
+        **Redirect to**: http://localhost:8081/$1?$2  
+        **Pattern type**: Regular Expression  
+        In advanced options:  
+        **Apply to**: Scripts and XMLHttpRequests (Ajax)
+    1. One for HMR updates  
+        **Example URL**: http://launch.playcanvas.com/191247d10e518c420782.hot-update.json  
+        **Include pattern**: http://launch.playcanvas.com/(.*).hot-update.(js|json)$  
+        **Redirect to**: http://localhost:8081/$1.hot-update.$2  
+        **Pattern type**: Regular Expression  
+        In advanced options:  
+        **Apply to**: Scripts and XMLHttpRequests (Ajax)
 
+After starting the server in the next step, you can open [http://launch.playcanvas.com/%7BprojectId%7D?debug=true](http://launch.playcanvas.com/%7BprojectId%7D?debug=true) (so the same URL as you'd regularely do, but with http instead of https) and all script files will be used from your local server instead of the files uploaded on the PlayCanvas servers.
+
+Note that while Redirector is active, **all** requests matching the above patterns are redirected to your local server, even if you are not running your local server and even for projects hosted at [http://launch.playcanvas.com](launch.playcanvas.com) that you don't even want to run locally. Be sure to turn Redirector off or use https URLs in those cases.
+		
 #### Starting the server
 
 Now you can type `npm start` in the project root. This will, build and upload your code, then start a local server
@@ -284,7 +304,7 @@ easier said than done.  You can also replace `server.pem` with your own trusted 
 certificate.  Just you'll have to pack it as a `.pem` file. (On Apple by default it will be a `.p12`, 
 Google for how to change it).
 
-**Don't forget to change your launch URL and the local parameter `?local=http://localhost:8081` to HTTPS!!**
+**Don't forget to change your launch URL to HTTPS and add/change the Redirector rules to support HTTPS!!**
 
 Personally I've used [Certificate Tools](https://certificatetools.com) to make certs that work. Make sure you sent the `Subject
 Alternative Name(s) DNS` to `localhost` **as well as** `Common Names`.  It also provides you with a thing
