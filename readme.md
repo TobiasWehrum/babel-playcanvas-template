@@ -1,6 +1,8 @@
 # Forker's Note
 
-Hey folks! This is a fork of [https://github.com/whydoidoit/babel-playcanvas-template](https://github.com/whydoidoit/babel-playcanvas-template) made by the amazing [whydoidoit](https://github.com/whydoidoit). Unfortunately it seems that over the last 2 years some things broke, and since it seems he is not maintaining the repository anymore I decided to spend a few minutes to make the necessary changes.
+Hey folks! This is a fork of [https://github.com/whydoidoit/babel-playcanvas-template](https://github.com/whydoidoit/babel-playcanvas-template) made by the amazing [whydoidoit](https://github.com/whydoidoit). Unfortunately it seems that over the last 2 years some things broke, and since it seems he is not maintaining the repository anymore I decided to spend a few minutes to make the minimal necessary changes.
+
+Note that the tools used (e.g. Babel, Webpack etc.) are also out of date, but they *work* and I don't have enough time at the moment to update them. Feel free to send a pull request if you do!
 
 Apart from this note and the chapters "Deprecated Methods", "Setting up Redirector (Chrome only)" and a small change in "HTTPS serving", this document is completely written by whydoidoit.
 
