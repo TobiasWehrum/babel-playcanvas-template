@@ -1,8 +1,10 @@
 //See reference project https://playcanvas.com/project/504134/overview/test-es6
 
-import {V} from 'playcanvas-working-vectors';
-import delay from 'playcanvas-delay'
+import { V } from 'playcanvas-working-vectors';
+//import delay from 'playcanvas-delay'
 import timeout from 'playcanvas-timeout'
+
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 const Example = pc.createScript('example');
 Example.attributes.set({
