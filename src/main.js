@@ -1,6 +1,8 @@
 // !!!REQUIRED IMPORTS!!!
 import 'createscript';
 
+import "babel-polyfill";
+
 /**********************************************/
 /* Useful PlayCanvas polyfills and extensions */
 /**********************************************/
